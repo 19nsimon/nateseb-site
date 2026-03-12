@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Nate & Seb</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #FFFFFF;
+      --ink:    #0A0A0A;
+      --muted:  #888888;
+      --accent: #D41F1F;
+      --dark:   #0A0A0A;
+      --border: rgba(10,10,10,0.12);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.delay-1 { transition-delay: 0.1s; }
+    .reveal.delay-2 { transition-delay: 0.2s; }
+    .reveal.delay-3 { transition-delay: 0.3s; }
+    .reveal.delay-4 { transition-delay: 0.4s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .nav-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-link {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink);
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--accent); }
+    .nav-link.active { color: var(--accent); }
+    .nav-cta {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--accent);
+      transition: opacity 0.15s;
+    }
+    .nav-cta:hover { opacity: 0.7; }
+
+    /* ── HERO ── */
+    .about-hero {
+      background: var(--dark);
+      padding: 80px 28px 88px;
+    }
+    .about-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .about-hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 108px;
+      line-height: 0.9;
+      color: #FFFFFF;
+      letter-spacing: 0.02em;
+      margin-bottom: 40px;
+    }
+    .about-hero-lead {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.75);
+      max-width: 620px;
+    }
+
+    /* ── SECTION ── */
+    .section { padding: 72px 28px; }
+    .section-dark { background: var(--dark); padding: 72px 28px; }
+
+    .section-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .section-dark .section-eyebrow { color: rgba(255,255,255,0.3); }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      line-height: 1.0;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      margin-bottom: 32px;
+    }
+    .section-dark .section-title { color: #FFFFFF; }
+    .section-title em { font-style: normal; color: var(--accent); }
+
+    .body-text {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.8;
+      color: rgba(10,10,10,0.72);
+      max-width: 640px;
+    }
+    .section-dark .body-text { color: rgba(255,255,255,0.65); }
+    .body-text + .body-text { margin-top: 20px; }
+
+    /* ── TWO-COL ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .two-col-wide {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    /* ── PROFILE CARDS ── */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      margin-top: 40px;
+    }
+    .profile-card {
+      background: var(--dark);
+      padding: 40px 36px 44px;
+    }
+    .profile-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      letter-spacing: 0.03em;
+      color: #FFFFFF;
+      line-height: 1.0;
+      margin-bottom: 6px;
+    }
+    .profile-origin {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 12px;
+    }
+    .profile-role {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .profile-bio {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ── PROGRAM NOTE ── */
+    .program-note {
+      background: #F5F5F5;
+      border-left: 3px solid var(--accent);
+      padding: 20px 24px;
+      margin-top: 32px;
+    }
+    .program-note p {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      line-height: 1.7;
+      color: rgba(10,10,10,0.6);
+    }
+    .program-note strong { color: var(--ink); }
+
+    /* ── STAT GRID ── */
+    .stat-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 40px;
+    }
+    .stat-cell {
+      padding: 24px 0;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .stat-cell:nth-child(even) { border-right: none; padding-left: 28px; }
+    .stat-cell:nth-child(odd) { padding-right: 28px; }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      line-height: 1.0;
+      color: #FFFFFF;
+      letter-spacing: 0.02em;
+    }
+    .stat-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-top: 6px;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 28px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .timeline-item:first-child { border-top: 1px solid var(--border); }
+    .timeline-month {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      padding-top: 2px;
+    }
+    .timeline-date {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .timeline-body-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .timeline-body-text {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.75;
+      color: rgba(10,10,10,0.58);
+    }
+    .timeline-tag {
+      display: inline-block;
+      margin-top: 10px;
+      margin-right: 6px;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .timeline-tag.nate { border-color: rgba(212,31,31,0.3); color: var(--accent); }
+    .timeline-tag.seb { border-color: rgba(10,10,10,0.25); color: var(--ink); }
+    .timeline-tag.both { background: var(--accent); border-color: var(--accent); color: #FFF; }
+
+    /* ── DESTINATION GRID ── */
+    .dest-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 40px;
+    }
+    .dest-card {
+      background: #F5F5F5;
+      padding: 28px 24px 32px;
+      border-left: 3px solid transparent;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .dest-card:hover { border-left-color: var(--accent); background: #FAFAFA; }
+    .dest-flag { font-size: 28px; margin-bottom: 12px; display: block; }
+    .dest-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .dest-who {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .dest-detail {
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    /* ── PULL QUOTE ── */
+    .pull-quote {
+      border-left: 4px solid var(--accent);
+      padding: 4px 0 4px 28px;
+      margin: 40px 0 0;
+    }
+    .pull-quote p {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      line-height: 1.2;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+    .section-dark .pull-quote p { color: #FFFFFF; }
+    .pull-quote cite {
+      display: block;
+      margin-top: 12px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-style: normal;
+    }
+    .section-dark .pull-quote cite { color: rgba(255,255,255,0.3); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 20px 28px 28px;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .footer-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .footer-sub {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+    .footer-links { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+    .footer-links a {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.15s;
+      line-height: 2;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy {
+      margin-top: 28px;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(10,10,10,0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-brand">Nate & Seb</a>
+    <div class="nav-links">
+      <a href="index.html#episodes" class="nav-link">Episodes</a>
+      <a href="about.html" class="nav-link active">About</a>
+      <a href="gallery.html" class="nav-link">Photos</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <a href="https://www.youtube.com/@NateSeb" target="_blank" class="nav-cta">Watch on YouTube ↗</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="about-hero">
+    <p class="about-eyebrow reveal">Salaya, Thailand · Sep — Dec 2024</p>
+    <h1 class="about-hero-title reveal delay-1">Two<br />Programs.<br />One<br />Friendship.</h1>
+    <p class="about-hero-lead reveal delay-2">
+      We didn't meet through the same study abroad program. We met the way most good things happen: by proximity, boredom, and the mutual need for someone to eat late-night street food with. Nate was on the MUIC exchange through his American university, UMass Amherst. Seb flew in from Warsaw on his own Polish program. Both ended up at Bundit House in Salaya. The rest followed.
+    </p>
+  </section>
+
+  <!-- WHO WE ARE -->
+  <section class="section">
+    <p class="section-eyebrow reveal">Who We Are</p>
+    <h2 class="section-title reveal delay-1">Nate<br /><em>&</em> Seb.</h2>
+
+    <div class="profile-grid">
+      <div class="profile-card reveal">
+        <p class="profile-origin">American · MUIC Exchange CIS Program</p>
+        <h3 class="profile-name">Nate</h3>
+        <p class="profile-role">Co-host</p>
+        <p class="profile-bio">
+          Arrived in Thailand with his friend Harry. Signed up for the Mahidol University International College (MUIC) exchange program through a third party organization called CIS — a group of about 30 students from around the US who became the backbone of his semester. Spent four months traveling across Southeast Asia and beyond: Cambodia with CIS, Vietnam on motorbikes, Singapore to visit a friend, Koh Tao for scuba, Laos for tubing and hiking, Japan for snowboarding.
+        </p>
+      </div>
+      <div class="profile-card reveal delay-1">
+        <p class="profile-origin">Polish · MUIC Independent Abroad Program</p>
+        <h3 class="profile-name">Seb</h3>
+        <p class="profile-role">Co-host</p>
+        <p class="profile-bio">
+          Flew in from Warsaw with a film camera on his own individual abroad program — not the same CIS cohort as Nate, but they ended up in the same apartment complex at Bundit House. Spent five months in Thailand, building a life around spontaneity, late-night snacks, and a dorm room that at one point housed five Polish friends. Traveled to Cambodia, Kanchanaburi, Koh Tao, northern Vietnam's Hà Giang province, Chiang Mai for the Lantern Festival, Laos, Malaysia, and Pai.
+        </p>
+      </div>
+    </div>
+
+    <div class="program-note reveal delay-2" style="margin-top: 16px;">
+      <p><strong>A note on the programs:</strong> Nate was enrolled through the MUIC/CIS international exchange, a structured cohort program. Seb was in Thailand independently through his Polish university's abroad program. They weren't in the same program, shared most of the same social world around campus and Salaya. Of the travels listed below, they only took one trip together — Pattaya, November 1–2 — though they spent considerable time exploring Bangkok together throughout the semester.</p>
+    </div>
+  </section>
+
+  <!-- THE PROGRAM -->
+  <section class="section-dark">
+    <p class="section-eyebrow reveal">The School</p>
+    <h2 class="section-title reveal delay-1">Mahidol<br /><em>University.</em></h2>
+
+    <div class="two-col-wide">
+      <div>
+        <p class="body-text reveal delay-1">
+          Mahidol University is one of Thailand's most prestigious research universities, consistently ranked first in the country. Its main campus sits in Salaya, Nakhon Pathom — a quiet suburb about 25km west of central Bangkok, well connected to the city by the BTS and MRT lines.
+        </p>
+        <p class="body-text reveal delay-2">
+          Nate enrolled in Mahidol University International College (MUIC) through CIS, a third party organization- a cohort of roughly 30 students each semester, from universities across North America. Courses are taught in English, and the program includes organized field trips, cultural excursions, and a farewell dinner at the end of term.
+        </p>
+        <p class="body-text reveal delay-3">
+          Seb arrived on a separate arrangement through his Polish university — same campus, same dorm area, different paperwork. The practical effect was that both of them ended up living in Bundit House in Salaya, sharing the same canteen, the same local 7-Eleven(s), and eventually the same podcast.
+        </p>
+      </div>
+      <div>
+        <div class="stat-block reveal delay-2">
+          <div class="stat-cell">
+            <div class="stat-num">1969</div>
+            <div class="stat-label">Founded</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">#1</div>
+            <div class="stat-label">Thailand QS Rank</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">35K+</div>
+            <div class="stat-label">Students</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">~80</div>
+            <div class="stat-label">CIS Exchange Students / Semester</div>
+          </div>
+        </div>
+
+        <div class="pull-quote reveal delay-3">
+          <p>"I kind of forgot I was a student during this whole story. I had to pass some exams and I did successfully. Well, some of it."</p>
+          <cite>— Seb, Ep. 10: Study Abroad Recap</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="section">
+    <p class="section-eyebrow reveal">The Semester</p>
+    <h2 class="section-title reveal delay-1">What<br /><em>Happened.</em></h2>
+    <p class="body-text reveal delay-2" style="margin-bottom: 12px;">A month-by-month account. Tags indicate who went on each trip.</p>
+    <div class="reveal delay-2" style="display:flex; gap:10px; margin-bottom: 32px; flex-wrap: wrap;">
+      <span class="timeline-tag nate">Nate</span>
+      <span class="timeline-tag seb">Seb</span>
+      <span class="timeline-tag both">Both</span>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div>
+        <div class="timeline-month">Sep</div>
+        <div class="timeline-date">Sep 1 – Sep 30</div>
+      </div>
+      <div>
+        <p class="timeline-body-title">Arrival, Orientation & Cambodia</p>
+        <p class="timeline-body-text">
+          Nate arrived with Harry, check into a temporary hoetl and met the rest of the students in their CIS cohort. From there, the program transported the students to the Bubdit House. From there, Nate and Harry immediately went to a dispensary and a 7-Eleven — in that order. Sep 4 brought a Bangkok temple tour with the CIS group, a first look at the Royal Temples and a chance to properly meet the other exchange students. MUIC orientation on Sep 11 kicked off the structured side of the program. A Sep 17 street food tour and a Chinatown trip rounded out the Bangkok introductions.
+          <br /><br />
+          Sep 6–8: The CIS cohort flew to Siem Reap, Cambodia. Angkor Wat, Angkor Thom, a night market on Pub Street, a day market where you could buy eggs in bags and whiskey for cheap, and a bike tour through the jungle temples. Also around the three-week mark, Seb made his own trip to Cambodia — equally blown away by the same temples.
+        </p>
+        <span class="timeline-tag nate">Nate — CIS Cambodia Sep 6–8</span>
+        <span class="timeline-tag seb">Seb — Cambodia (solo, ~3 weeks in)</span>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div>
+        <div class="timeline-month">Oct</div>
+        <div class="timeline-date">Oct 1 – Oct 31</div>
+      </div>
+      <div>
+        <p class="timeline-body-title">Kanchanaburi · Krabi · Vietnam · Singapore</p>
+        <p class="timeline-body-text">
+          <strong>Oct 5–6 — Kanchanaburi (Nate, CIS):</strong> CIS organized trip to the Death Railway and Bridge on the River Kwai. Elephants in the national park. A cooking class. Seb also made it to Kanchanaburi around this period — rented a motorbike and rode through the national parks solo.
+          <br /><br />
+          <strong>Oct 7–9 — Krabi (Nate + CIS friends):</strong> Organized by the students, not CIS. The group — Haz, Will, Jordan, Savannah, Huy, Donna, Zay, and Alex — took a boat tour of the islands, paid a local to watch the sunset from the water, and broke into an abandoned hotel to explore. Beautiful and slightly illegal.
+          <br /><br />
+          <strong>Oct 10–14 — Vietnam, HCMC (Nate + group):</strong> Flew to Ho Chi Minh City. Rented motorbikes and rode north up the coast through Veng Tua and Phan Thiet with Haz, Will, Zay, Alex, Henry, and Huy. Huy crashed his bike into Nate at night. The next morning, Nate and Alex got lost in a field of dragon fruit, then hydroplaned on their bikes in a monsoon and a local family gave them soup and shelter. Ended with the Cu Chi Tunnels. Seb separately traveled to northern Vietnam's Hà Giang province — three days on a motorbike through scenery that looked like Lord of the Rings.
+          <br /><br />
+          <strong>Oct 25–28 — Singapore (Nate, Harry, Will):</strong> Visited Nate's UMass friend Inez. Gardens by the Bay, beer towers, and getting kicked out of a club. Architecture that made Bangkok feel low-rise.
+        </p>
+        <span class="timeline-tag nate">Nate — Kanchanaburi, Krabi, Vietnam, Singapore</span>
+        <span class="timeline-tag seb">Seb — Kanchanaburi (solo), N. Vietnam</span>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div>
+        <div class="timeline-month">Nov</div>
+        <div class="timeline-date">Nov 1 – Nov 30</div>
+      </div>
+      <div>
+        <p class="timeline-body-title">Pattaya · Koh Tao · Koh Chang · Laos Begins</p>
+        <p class="timeline-body-text">
+          <strong>Nov 1–2 — Pattaya (Nate, Seb, Harry):</strong> The one trip they did together. Bar Street at night. Film photos that turned out well.
+          <br /><br />
+          <strong>Nov 8–10 — Koh Tao (Nate + CIS and MUIC friends):</strong> Scuba certification over three days. Hired an underwater photographer for $20. Saw a whale shark ascending out of the deep. Seb also rated Koh Tao as the single best place he visited the entire semester — pool parties, reggae music, diving, beaches that didn't seem real.
+          <br /><br />
+          <strong>Nov 22–24 — Koh Chang (Nate, CIS):</strong> CIS-organized relaxing island trip. Wind-down before the end-of-semester sprint.
+          <br /><br />
+          <strong>Nov 27 — Bangkok solo (Nate):</strong> Took himself into the city to get a bespoke suit made at Jesse & Son. Nailed it.
+          <br /><br />
+          <strong>Nov 29 — Laos, Vang Vieng (Nate, Haz, Will, Hank, Huy, Andy):</strong> Flight in, fro-yo on arrival, tobacco bongs at every hostel, motorbike rentals, hiking, and tipsy tubing on the Nam Song River. Seb made it to the Chiang Mai Lantern Festival this month — described it as the absolute highlight of his semester.
+        </p>
+        <span class="timeline-tag both">Pattaya Nov 1–2</span>
+        <span class="timeline-tag nate">Nate — Koh Tao, Koh Chang, Laos</span>
+        <span class="timeline-tag seb">Seb — Koh Tao, Chiang Mai Lantern Festival</span>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div>
+        <div class="timeline-month">Dec</div>
+        <div class="timeline-date">Dec 1 – Dec 23</div>
+      </div>
+      <div>
+        <p class="timeline-body-title">Laos Ends · CIS Farewell · Japan</p>
+        <p class="timeline-body-text">
+          <strong>Dec 1–2 — Laos, Vang Vieng continued (Nate, Haz, Will, Hank, Huy, Andy):</strong> More hiking. The landscape in Laos was genuinely staggering.
+          <br /><br />
+          <strong>Dec 3 — CIS Farewell Dinner, Bangkok (Nate + entire CIS cohort):</strong> End of the official program. Parties, handshakes, some hugs. Nate navigated here by himself as he was getting his second fitting for his custom suit done elsewhere in Bangkok beforehand. Seb was in Pai at this point, so he missed the farewell — but he did make it to the final MUIC Christmas Market a few days later, which was a highlight for him.
+          <br /><br />
+          <strong>Dec 16–23 — Japan (Nate + Harry):</strong> Tokyo for the first two days — Shibuya, the Sky Tree, CIS friends spotted in the wild. Bullet train to Nagano on Dec 19 — so much snow. Snowboarding on Dec 20. Harry got sick on Dec 21, so Nate solo-traveled to the Jigokudani Snow Monkey Forest. Back to Tokyo for one last night, departure Dec 23.
+          <br /><br />
+          Seb separately wound down his semester with more time in Bangkok, a trip to Pai — a remote village of 3,000 people where he felt stranded in the best possible way — and a final trip to Malaysia with his girlfriend Hasi: Kuala Lumpur and a Malaysian island.
+        </p>
+        <span class="timeline-tag nate">Nate — CIS Farewell, Japan Dec 16–23</span>
+        <span class="timeline-tag seb">Seb — Pai, Malaysia</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESTINATIONS -->
+  <section class="section-dark">
+    <p class="section-eyebrow reveal">Where We Went</p>
+    <h2 class="section-title reveal delay-1">Seven<br /><em>Countries.</em></h2>
+    <p class="body-text reveal delay-2">Between the two of them, across four and five months respectively. Not all trips were shared — see the About section for who went where.</p>
+
+    <div class="dest-grid">
+      <div class="dest-card reveal" style="background:#111; border-color: transparent;">
+        <span class="dest-flag">🇹🇭</span>
+        <div class="dest-name" style="color:#fff;">Thailand</div>
+        <p class="dest-who">Both · Home Base</p>
+        <p class="dest-detail" style="color:rgba(255,255,255,0.4);">Salaya/Bundit House for daily life. Bangkok for everything else — Chinatown, Khao San Road, Muay Thai fights, MBK, street food, 7-Elevens at 2am. Plus: Krabi, Koh Tao, Koh Chang, Kanchanaburi, Pattaya, Chiang Mai, Pai.</p>
+      </div>
+      <div class="dest-card reveal delay-1" style="background:#111; border-color: transparent;">
+        <span class="dest-flag">🇰🇭</span>
+        <div class="dest-name" style="color:#fff;">Cambodia</div>
+        <p class="dest-who">Both · Independently</p>
+        <p class="dest-detail" style="color:rgba(255,255,255,0.4);">Siem Reap. Angkor Wat before the crowds. Angkor Thom through the jungle. Pub Street at night. A market selling things neither of them had seen before. Runs on US dollars. Visibly poor, breathtakingly beautiful.</p>
+      </div>
+      <div class="dest-card reveal delay-2" style="background:#111; border-color: transparent;">
+        <span class="dest-flag">🇻🇳</span>
+        <div class="dest-name" style="color:#fff;">Vietnam</div>
+        <p class="dest-who">Both · Different Routes</p>
+        <p class="dest-detail" style="color:rgba(255,255,255,0.4);">Nate: Ho Chi Minh City, motorcycle up the coast to Phan Thiet, Cu Chi Tunnels. Seb: Hà Giang province in the north — three days on a motorbike through scenery described as Lord of the Rings. Also Hanoi.</p>
+      </div>
+      <div class="dest-card reveal" style="background:#111; border-color: transparent;">
+        <span class="dest-flag">🇸🇬</span>
+        <div class="dest-name" style="color:#fff;">Singapore</div>
+        <p class="dest-who">Nate · Oct 25–28</p>
+        <p class="dest-detail" style="color:rgba(255,255,255,0.4);">With Harry and Will, visiting Nate's UMass friend Inez. Gardens by the Bay, beer towers, getting kicked out of a club. Cleanest city either of them had ever visited.</p>
+      </div>
+      <div class="dest-card reveal delay-1" style="background:#111; border-color: transparent;">
+        <span class="dest-flag">🇱🇦</span>
+        <div class="dest-name" style="color:#fff;">Laos</div>
+        <p class="dest-who">Nate · Nov 29 – Dec 2</p>
+        <p class="dest-detail" style="color:rgba(255,255,255,0.4);">Vang Vieng. Fro-yo on arrival, tobacco bongs in every hostel, motorbikes through the valley, hiking to sunset viewpoints, and tipsy tubing down the Nam Song River with the boys.</p>
+      </div>
+      <div class="dest-card reveal delay-2" style="background:#111; border-color: transparent;">
+        <span class="dest-flag">🇯🇵</span>
+        <div class="dest-name" style="color:#fff;">Japan</div>
+        <p class="dest-who">Nate · Dec 16–23</p>
+        <p class="dest-detail" style="color:rgba(255,255,255,0.4);">Tokyo then Nagano. Shibuya at midnight, Sky Tree, bullet train, so much snow, snowboarding, and a solo trip to the Jigokudani Snow Monkey Forest when Harry got sick.</p>
+      </div>
+      <div class="dest-card reveal" style="background:#111; border-color: transparent;">
+        <span class="dest-flag">🇲🇾</span>
+        <div class="dest-name" style="color:#fff;">Malaysia</div>
+        <p class="dest-who">Seb · End of Semester</p>
+        <p class="dest-detail" style="color:rgba(255,255,255,0.4);">Kuala Lumpur and a Malaysian island, with Hasi. Good hotels, great food, the Petronas Towers looking like an optical illusion in real life. "More than good. Actually, amazing."</p>
+      </div>
+      <div class="dest-card reveal delay-1" style="background:#111; border-color: transparent; grid-column: span 2;">
+        <span class="dest-flag">📍</span>
+        <div class="dest-name" style="color:rgba(255,255,255,0.2);">And a lot of 7-Elevens.</div>
+        <p class="dest-detail" style="color:rgba(255,255,255,0.15);">In Thailand, the 7-Eleven is not a convenience store. It's a lifestyle. Open 24 hours. Sells everything. Appears every 200 meters. Becomes a place of genuine comfort when you are far from home. We ate a lot of meals there. No regrets.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE PODCAST -->
+  <section class="section">
+    <p class="section-eyebrow reveal">The Show</p>
+    <h2 class="section-title reveal delay-1">Why<br /><em>A Podcast.</em></h2>
+
+    <div class="two-col">
+      <div>
+        <p class="body-text reveal delay-1">
+          The podcast started the way most things start between two people who talk too much: out of necessity. We had things to say and no obvious place to say them. A YouTube channel felt like the right format — long enough to be real, short enough to hold together.
+        </p>
+        <p class="body-text reveal delay-2">
+          The coversations are always great — two people from different countries, on different programs, who'd ended up sharing the same patch of suburban Bangkok and a lot of late nights.
+        </p>
+        <p class="body-text reveal delay-3">
+          Now Nate is back in the US and Seb is back in Warsaw. We record remotely, still releasing weekly. The topics range — vulnerability, screen time, individuality, New Year's resolutions, AI, cooking, sleep, dreams. The through-line is just the two of us trying to think clearly about things that matter, in public, without pretending we've figured them out.
+        </p>
+      </div>
+      <div>
+        <div class="pull-quote reveal delay-2">
+          <p>"This doesn't even tell the full story. There was so much more that we did. I wish I could include all of it."</p>
+          <cite>— Nate, Ep. 10: Study Abroad Recap</cite>
+        </div>
+        <div style="margin-top: 36px;" class="reveal delay-3">
+          <p style="font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px;">New episodes every week</p>
+          <a href="https://www.youtube.com/@NateSeb" target="_blank" style="display: inline-block; background: var(--accent); color: #FFFFFF; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; padding: 14px 28px; transition: opacity 0.15s;">Subscribe on YouTube ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <span class="footer-brand">Nate & Seb</span>
+        <p class="footer-sub">Nate & Sebastian<br />Est. Mahidol University, Thailand · Sep 2024</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home ↗</a>
+        <a href="gallery.html">Photos ↗</a>
+        <a href="contact.html">Contact ↗</a>
+        <a href="https://www.youtube.com/@NateSeb" target="_blank">YouTube ↗</a>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 Nate & Seb</p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

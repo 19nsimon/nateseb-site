@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photos — Nate & Seb</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #FFFFFF;
+      --ink:    #0A0A0A;
+      --muted:  #888888;
+      --accent: #D41F1F;
+      --dark:   #0A0A0A;
+      --border: rgba(10,10,10,0.12);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.delay-1 { transition-delay: 0.1s; }
+    .reveal.delay-2 { transition-delay: 0.2s; }
+    .reveal.delay-3 { transition-delay: 0.3s; }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .nav-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-link {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink);
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--accent); }
+    .nav-link.active { color: var(--accent); }
+    .nav-cta {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--accent);
+      transition: opacity 0.15s;
+    }
+    .nav-cta:hover { opacity: 0.7; }
+
+    /* ── CAROUSEL ── */
+    .carousel-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 520px;
+      background: var(--dark);
+    }
+
+    .carousel-images {
+      position: relative;
+      overflow: hidden;
+    }
+    .carousel-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.9s ease;
+    }
+    .carousel-slide.active { opacity: 1; }
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .carousel-dots {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 10;
+    }
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .dot.active { background: var(--accent); }
+
+    .carousel-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 56px 48px;
+      border-left: 1px solid rgba(255,255,255,0.07);
+    }
+    .carousel-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .carousel-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 72px;
+      line-height: 0.95;
+      color: #FFFFFF;
+      letter-spacing: 0.03em;
+      margin-bottom: 32px;
+    }
+    .carousel-body {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.65);
+      max-width: 320px;
+    }
+    .carousel-meta {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .carousel-meta-item {
+      display: flex;
+      gap: 16px;
+      align-items: baseline;
+    }
+    .carousel-meta-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      min-width: 64px;
+    }
+    .carousel-meta-val {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── GRID HEADER ── */
+    .grid-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 20px 28px 14px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .grid-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .grid-count {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: rgba(10,10,10,0.3);
+    }
+
+    /* ── PHOTO GRID ── */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      background: rgba(10,10,10,0.08);
+      padding: 3px;
+    }
+    .photo-item {
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      background: #111;
+      cursor: pointer;
+    }
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+    .photo-item:hover img { transform: scale(1.05); }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-img {
+      max-width: 88vw;
+      max-height: 88vh;
+      object-fit: contain;
+      display: block;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: color 0.15s;
+      background: none;
+      border: none;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .lightbox-close:hover { color: var(--accent); }
+    .lightbox-prev, .lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: rgba(255,255,255,0.35);
+      cursor: pointer;
+      padding: 16px;
+      transition: color 0.15s;
+    }
+    .lightbox-prev:hover, .lightbox-next:hover { color: var(--accent); }
+    .lightbox-prev { left: 16px; }
+    .lightbox-next { right: 16px; }
+    .lightbox-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      white-space: nowrap;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 20px 28px 28px;
+      margin-top: 3px;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .footer-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .footer-sub {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+    .footer-links { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+    .footer-links a {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.15s;
+      line-height: 2;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy {
+      margin-top: 28px;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(10,10,10,0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-brand">Nate & Seb</a>
+    <div class="nav-links">
+      <a href="index.html#episodes" class="nav-link">Episodes</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="gallery.html" class="nav-link active">Photos</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <a href="https://www.youtube.com/@NateSeb" target="_blank" class="nav-cta">Watch on YouTube ↗</a>
+  </nav>
+
+  <!-- CAROUSEL -->
+  <div class="carousel-wrap">
+
+    <!-- Left: rotating images -->
+    <div class="carousel-images" id="carouselImages">
+      <div class="carousel-slide active"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Beach_Birdseye.jpg" alt="" /></div>
+      <div class="carousel-slide"><img src="Downloads/Nate_and_Sebs_Pics/Boys_Angkor_Wat.jpg" alt="" /></div>
+      <div class="carousel-slide"><img src="Downloads/Nate_and_Sebs_Pics/Bundit_Sunset.jpg" alt="" /></div>
+      <div class="carousel-slide"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Islands.jpg" alt="" /></div>
+      <div class="carousel-slide"><img src="Downloads/Nate_and_Sebs_Pics/Pub_Street_Cambodia.jpg" alt="" /></div>
+      <div class="carousel-slide"><img src="Downloads/Nate_and_Sebs_Pics/Vietnam_Bike_Selfie_in_Traffic.jpg" alt="" /></div>
+      <div class="carousel-slide"><img src="Downloads/Nate_and_Sebs_Pics/Touch_Down_Tokyo.jpg" alt="" /></div>
+      <div class="carousel-slide"><img src="Downloads/Nate_and_Sebs_Pics/Singapore_Day_Drink.jpg" alt="" /></div>
+      <div class="carousel-slide"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Rock_Climb.jpg" alt="" /></div>
+      <div class="carousel-slide"><img src="Downloads/Nate_and_Sebs_Pics/Bar_Group.jpg" alt="" /></div>
+      <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+
+    <!-- Right: static text -->
+    <div class="carousel-text">
+      <p class="carousel-eyebrow reveal">Sep — Dec 2024</p>
+      <h1 class="carousel-headline reveal delay-1">Four<br />Months.<br />One<br />Semester.</h1>
+      <p class="carousel-body reveal delay-2">
+        Thailand, Cambodia, Vietnam, Japan, Singapore —
+        and a lot of 7-Elevens in between. Shot on film
+        and phone. Mostly candid, mostly night.
+      </p>
+      <div class="carousel-meta reveal delay-3">
+        <div class="carousel-meta-item">
+          <span class="carousel-meta-label">Base</span>
+          <span class="carousel-meta-val">Mahidol University, Salaya</span>
+        </div>
+        <div class="carousel-meta-item">
+          <span class="carousel-meta-label">Countries</span>
+          <span class="carousel-meta-val">Thailand · Cambodia · Vietnam · Japan · Singapore</span>
+        </div>
+        <div class="carousel-meta-item">
+          <span class="carousel-meta-label">Shot on</span>
+          <span class="carousel-meta-val">35mm Film + iPhone</span>
+        </div>
+        <div class="carousel-meta-item">
+          <span class="carousel-meta-label">Photos</span>
+          <span class="carousel-meta-val">80</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GRID HEADER -->
+  <div class="grid-header reveal">
+    <span class="grid-label">All Photos</span>
+    <span class="grid-count">Sep — Dec 2024 &nbsp;·&nbsp; 80 images</span>
+  </div>
+
+  <!-- PHOTO GRID -->
+  <div class="photo-grid" id="photoGrid">
+    <div class="photo-item reveal" data-idx="0"><img src="Downloads/Nate_and_Sebs_Pics/Angkor_Wat.jpg" alt="Angkor Wat" /></div>
+    <div class="photo-item reveal delay-1" data-idx="1"><img src="Downloads/Nate_and_Sebs_Pics/Bangkok_China_Town.jpg" alt="Bangkok Chinatown" /></div>
+    <div class="photo-item reveal delay-2" data-idx="2"><img src="Downloads/Nate_and_Sebs_Pics/Bangkok_Traffic.jpg" alt="Bangkok Traffic" /></div>
+    <div class="photo-item reveal" data-idx="3"><img src="Downloads/Nate_and_Sebs_Pics/Bar_Group.jpg" alt="Bar Group" /></div>
+    <div class="photo-item reveal delay-1" data-idx="4"><img src="Downloads/Nate_and_Sebs_Pics/Boys_Angkor_Wat.jpg" alt="Boys at Angkor Wat" /></div>
+    <div class="photo-item reveal delay-2" data-idx="5"><img src="Downloads/Nate_and_Sebs_Pics/Boys_Sleeping_in_Bus.jpg" alt="Boys Sleeping in Bus" /></div>
+    <div class="photo-item reveal" data-idx="6"><img src="Downloads/Nate_and_Sebs_Pics/Boyz_in_da_Club.jpg" alt="Boys in the Club" /></div>
+    <div class="photo-item reveal delay-1" data-idx="7"><img src="Downloads/Nate_and_Sebs_Pics/Bundit_Boys.jpg" alt="Bundit Boys" /></div>
+    <div class="photo-item reveal delay-2" data-idx="8"><img src="Downloads/Nate_and_Sebs_Pics/Bundit_Sunset.jpg" alt="Bundit Sunset" /></div>
+    <div class="photo-item reveal" data-idx="9"><img src="Downloads/Nate_and_Sebs_Pics/CIS_Airport.jpg" alt="CIS Airport" /></div>
+    <div class="photo-item reveal delay-1" data-idx="10"><img src="Downloads/Nate_and_Sebs_Pics/CIS_Kids_in_Bar.JPG" alt="CIS Kids in Bar" /></div>
+    <div class="photo-item reveal delay-2" data-idx="11"><img src="Downloads/Nate_and_Sebs_Pics/Cigs_on_Night_Boat_Krabbi.jpg" alt="Night Boat, Krabi" /></div>
+    <div class="photo-item reveal" data-idx="12"><img src="Downloads/Nate_and_Sebs_Pics/Classic_Nightly_Snack.jpg" alt="Classic Nightly Snack" /></div>
+    <div class="photo-item reveal delay-1" data-idx="13"><img src="Downloads/Nate_and_Sebs_Pics/Decrepit_Bangkok.jpg" alt="Decrepit Bangkok" /></div>
+    <div class="photo-item reveal delay-2" data-idx="14"><img src="Downloads/Nate_and_Sebs_Pics/Diddy_Bed.jpg" alt="Diddy Bed" /></div>
+    <div class="photo-item reveal" data-idx="15"><img src="Downloads/Nate_and_Sebs_Pics/Dragon_Friut_Grove.jpg" alt="Dragon Fruit Grove" /></div>
+    <div class="photo-item reveal delay-1" data-idx="16"><img src="Downloads/Nate_and_Sebs_Pics/Faded_7-11_Harry_and_Will.jpg" alt="7-Eleven — Harry & Will" /></div>
+    <div class="photo-item reveal delay-2" data-idx="17"><img src="Downloads/Nate_and_Sebs_Pics/Faded_7-11_Will.jpg" alt="7-Eleven — Will" /></div>
+    <div class="photo-item reveal" data-idx="18"><img src="Downloads/Nate_and_Sebs_Pics/Flooded_Bundit.jpg" alt="Flooded Bundit" /></div>
+    <div class="photo-item reveal delay-1" data-idx="19"><img src="Downloads/Nate_and_Sebs_Pics/Gas_Fill_Up_Vietnam.jpg" alt="Gas Fill Up, Vietnam" /></div>
+    <div class="photo-item reveal delay-2" data-idx="20"><img src="Downloads/Nate_and_Sebs_Pics/Giga_Mall_Parking_Vietnam.jpg" alt="Giga Mall Parking, Vietnam" /></div>
+    <div class="photo-item reveal" data-idx="21"><img src="Downloads/Nate_and_Sebs_Pics/Harry_Chef_Kanchanaburi.jpg" alt="Harry Chef, Kanchanaburi" /></div>
+    <div class="photo-item reveal delay-1" data-idx="22"><img src="Downloads/Nate_and_Sebs_Pics/Harry_Huey_Sebs.jpg" alt="Harry, Huey & Seb" /></div>
+    <div class="photo-item reveal delay-2" data-idx="23"><img src="Downloads/Nate_and_Sebs_Pics/Harry_Nate_Durag.JPG" alt="Harry & Nate" /></div>
+    <div class="photo-item reveal" data-idx="24"><img src="Downloads/Nate_and_Sebs_Pics/Harry_Secret_Grub_Spot.jpg" alt="Harry's Secret Grub Spot" /></div>
+    <div class="photo-item reveal delay-1" data-idx="25"><img src="Downloads/Nate_and_Sebs_Pics/Harry_Will_Street_Market.jpg" alt="Harry & Will, Street Market" /></div>
+    <div class="photo-item reveal delay-2" data-idx="26"><img src="Downloads/Nate_and_Sebs_Pics/Ho_Chi_Mihn_City_Will_and_Henry.jpg" alt="Ho Chi Minh City — Will & Henry" /></div>
+    <div class="photo-item reveal" data-idx="27"><img src="Downloads/Nate_and_Sebs_Pics/Huey_and_Local_Vietnam_Bike_Crash.jpg" alt="Huey & Local — Bike Crash, Vietnam" /></div>
+    <div class="photo-item reveal delay-1" data-idx="28"><img src="Downloads/Nate_and_Sebs_Pics/Ice_Cream_and_Tea.jpg" alt="Ice Cream and Tea" /></div>
+    <div class="photo-item reveal delay-2" data-idx="29"><img src="Downloads/Nate_and_Sebs_Pics/Kanchanaburi_CIS_Tour.JPG" alt="Kanchanaburi CIS Tour" /></div>
+    <div class="photo-item reveal" data-idx="30"><img src="Downloads/Nate_and_Sebs_Pics/Kanchanaburi_Chill_Bar.jpg" alt="Kanchanaburi Chill Bar" /></div>
+    <div class="photo-item reveal delay-1" data-idx="31"><img src="Downloads/Nate_and_Sebs_Pics/Kanchanaburi_Harry_Chop.jpg" alt="Harry Chop, Kanchanaburi" /></div>
+    <div class="photo-item reveal delay-2" data-idx="32"><img src="Downloads/Nate_and_Sebs_Pics/Khao_San_Alex.jpg" alt="Khao San — Alex" /></div>
+    <div class="photo-item reveal" data-idx="33"><img src="Downloads/Nate_and_Sebs_Pics/Khao_San_Club.jpg" alt="Khao San Club" /></div>
+    <div class="photo-item reveal delay-1" data-idx="34"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Beach_Birdseye.jpg" alt="Krabi Beach — Birds Eye" /></div>
+    <div class="photo-item reveal delay-2" data-idx="35"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Boat.jpg" alt="Krabi Boat" /></div>
+    <div class="photo-item reveal" data-idx="36"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Boat_Mountain.jpg" alt="Krabi — Boat & Mountain" /></div>
+    <div class="photo-item reveal delay-1" data-idx="37"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Boat_Tour.jpg" alt="Krabi Boat Tour" /></div>
+    <div class="photo-item reveal delay-2" data-idx="38"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Islands.jpg" alt="Krabi Islands" /></div>
+    <div class="photo-item reveal" data-idx="39"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Night_Beach.jpg" alt="Krabi Night Beach" /></div>
+    <div class="photo-item reveal delay-1" data-idx="40"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Night_Boat.jpg" alt="Krabi Night Boat" /></div>
+    <div class="photo-item reveal delay-2" data-idx="41"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Rock_Climb.jpg" alt="Krabi Rock Climb" /></div>
+    <div class="photo-item reveal" data-idx="42"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Swimming.jpg" alt="Krabi Swimming" /></div>
+    <div class="photo-item reveal delay-1" data-idx="43"><img src="Downloads/Nate_and_Sebs_Pics/Krabbi_Truck_Ride.jpg" alt="Krabi Truck Ride" /></div>
+    <div class="photo-item reveal delay-2" data-idx="44"><img src="Downloads/Nate_and_Sebs_Pics/Last_Lunch_Loas.jpg" alt="Last Lunch, Laos" /></div>
+    <div class="photo-item reveal" data-idx="45"><img src="Downloads/Nate_and_Sebs_Pics/MBK_Bangkok.jpg" alt="MBK Bangkok" /></div>
+    <div class="photo-item reveal delay-1" data-idx="46"><img src="Downloads/Nate_and_Sebs_Pics/Market_Cambodia.jpg" alt="Market, Cambodia" /></div>
+    <div class="photo-item reveal delay-2" data-idx="47"><img src="Downloads/Nate_and_Sebs_Pics/Muy_Thai_Axe_Kick.JPG" alt="Muay Thai Axe Kick" /></div>
+    <div class="photo-item reveal" data-idx="48"><img src="Downloads/Nate_and_Sebs_Pics/Nate_Harry_Sebs.jpeg" alt="Nate, Harry & Seb" /></div>
+    <div class="photo-item reveal delay-1" data-idx="49"><img src="Downloads/Nate_and_Sebs_Pics/Nate_and_Gloria_Scuba.jpeg" alt="Nate & Gloria — Scuba" /></div>
+    <div class="photo-item reveal delay-2" data-idx="50"><img src="Downloads/Nate_and_Sebs_Pics/Nate_and_Sebs_Behind_Groove.jpeg" alt="Nate & Seb behind Groove" /></div>
+    <div class="photo-item reveal" data-idx="51"><img src="Downloads/Nate_and_Sebs_Pics/Nate_and_Sebs_Post_Massage.jpg" alt="Nate & Seb Post Massage" /></div>
+    <div class="photo-item reveal delay-1" data-idx="52"><img src="Downloads/Nate_and_Sebs_Pics/Nate_and_Sebs_at_Groove.jpeg" alt="Nate & Seb at Groove" /></div>
+    <div class="photo-item reveal delay-2" data-idx="53"><img src="Downloads/Nate_and_Sebs_Pics/Nate_and_Sebs_in_Grab.jpeg" alt="Nate & Seb in Grab" /></div>
+    <div class="photo-item reveal" data-idx="54"><img src="Downloads/Nate_and_Sebs_Pics/Nate_and_Zay_Angkor_Wat.JPG" alt="Nate & Zay — Angkor Wat" /></div>
+    <div class="photo-item reveal delay-1" data-idx="55"><img src="Downloads/Nate_and_Sebs_Pics/Nate_with_Ladyboy.jpeg" alt="Nate — Night Out" /></div>
+    <div class="photo-item reveal delay-2" data-idx="56"><img src="Downloads/Nate_and_Sebs_Pics/Post_Scuba_Group.jpg" alt="Post Scuba Group" /></div>
+    <div class="photo-item reveal" data-idx="57"><img src="Downloads/Nate_and_Sebs_Pics/Pub_Street_Cambodia.jpg" alt="Pub Street, Cambodia" /></div>
+    <div class="photo-item reveal delay-1" data-idx="58"><img src="Downloads/Nate_and_Sebs_Pics/Sebs_Eliza_Street_Food.jpg" alt="Seb & Eliza — Street Food" /></div>
+    <div class="photo-item reveal delay-2" data-idx="59"><img src="Downloads/Nate_and_Sebs_Pics/Sebs_and_Eliza(2).jpg" alt="Seb & Eliza" /></div>
+    <div class="photo-item reveal" data-idx="60"><img src="Downloads/Nate_and_Sebs_Pics/Sebs_and_Eliza.jpg" alt="Seb & Eliza" /></div>
+    <div class="photo-item reveal delay-1" data-idx="61"><img src="Downloads/Nate_and_Sebs_Pics/Shibuya_Harry_and_Zay.jpg" alt="Shibuya — Harry & Zay" /></div>
+    <div class="photo-item reveal delay-2" data-idx="62"><img src="Downloads/Nate_and_Sebs_Pics/Singapore_Day_Drink.jpg" alt="Singapore Day Drink" /></div>
+    <div class="photo-item reveal" data-idx="63"><img src="Downloads/Nate_and_Sebs_Pics/Sky_Train_Bangkok.jpg" alt="Sky Train, Bangkok" /></div>
+    <div class="photo-item reveal delay-1" data-idx="64"><img src="Downloads/Nate_and_Sebs_Pics/Sleepy_Bus.jpg" alt="Sleepy Bus" /></div>
+    <div class="photo-item reveal delay-2" data-idx="65"><img src="Downloads/Nate_and_Sebs_Pics/Sleepy_Security.jpg" alt="Sleepy Security" /></div>
+    <div class="photo-item reveal" data-idx="66"><img src="Downloads/Nate_and_Sebs_Pics/Study_Sesh.jpg" alt="Study Sesh" /></div>
+    <div class="photo-item reveal delay-1" data-idx="67"><img src="Downloads/Nate_and_Sebs_Pics/Thai_Class.jpg" alt="Thai Class" /></div>
+    <div class="photo-item reveal delay-2" data-idx="68"><img src="Downloads/Nate_and_Sebs_Pics/Thai_Guys.jpg" alt="Thai Guys" /></div>
+    <div class="photo-item reveal" data-idx="69"><img src="Downloads/Nate_and_Sebs_Pics/Thai_Guys_Balcony.jpg" alt="Thai Guys — Balcony" /></div>
+    <div class="photo-item reveal delay-1" data-idx="70"><img src="Downloads/Nate_and_Sebs_Pics/Thai_McDonalds.jpg" alt="Thai McDonald's" /></div>
+    <div class="photo-item reveal delay-2" data-idx="71"><img src="Downloads/Nate_and_Sebs_Pics/Thailand_First_Meal.jpg" alt="Thailand — First Meal" /></div>
+    <div class="photo-item reveal" data-idx="72"><img src="Downloads/Nate_and_Sebs_Pics/The_Boys_Chillin_on_Scuba_Boat.jpg" alt="The Boys — Scuba Boat" /></div>
+    <div class="photo-item reveal delay-1" data-idx="73"><img src="Downloads/Nate_and_Sebs_Pics/The_Boys_Feasting_in_Vietnam.jpg" alt="The Boys Feasting, Vietnam" /></div>
+    <div class="photo-item reveal delay-2" data-idx="74"><img src="Downloads/Nate_and_Sebs_Pics/The_Boys_Mid_Scuba_Prep.JPG" alt="The Boys — Scuba Prep" /></div>
+    <div class="photo-item reveal" data-idx="75"><img src="Downloads/Nate_and_Sebs_Pics/The_Boys_Taking_a_Break.jpg" alt="The Boys Taking a Break" /></div>
+    <div class="photo-item reveal delay-1" data-idx="76"><img src="Downloads/Nate_and_Sebs_Pics/Touch_Down_Tokyo.jpg" alt="Touch Down Tokyo" /></div>
+    <div class="photo-item reveal delay-2" data-idx="77"><img src="Downloads/Nate_and_Sebs_Pics/Trash_Dragon.jpg" alt="Trash Dragon" /></div>
+    <div class="photo-item reveal" data-idx="78"><img src="Downloads/Nate_and_Sebs_Pics/Vietnam_Bike_Selfie_in_Traffic.jpg" alt="Vietnam Bike Selfie in Traffic" /></div>
+    <div class="photo-item reveal delay-1" data-idx="79"><img src="Downloads/Nate_and_Sebs_Pics/Whale_Shark_from_Depths.jpg" alt="Whale Shark from the Depths" /></div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lbClose">Close ✕</button>
+    <button class="lightbox-prev" id="lbPrev">&#8592;</button>
+    <img class="lightbox-img" id="lbImg" src="" alt="" />
+    <button class="lightbox-next" id="lbNext">&#8594;</button>
+    <span class="lightbox-caption" id="lbCaption"></span>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <span class="footer-brand">Nate & Seb</span>
+        <p class="footer-sub">Nate & Sebastian<br />Est. Mahidol University, Thailand</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home ↗</a>
+        <a href="https://www.youtube.com/@NateSeb" target="_blank">YouTube ↗</a>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 Nate & Seb</p>
+  </footer>
+
+  <script>
+    // ── CAROUSEL ──
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dotsEl = document.getElementById('carouselDots');
+    let current = 0;
+
+    slides.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(d);
+    });
+    const dots = document.querySelectorAll('.dot');
+
+    function goTo(n) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = (n + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    setInterval(() => goTo(current + 1), 4000);
+
+    // ── SCROLL REVEAL ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── LIGHTBOX ──
+    const items = document.querySelectorAll('.photo-item');
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCaption = document.getElementById('lbCaption');
+    let lbCurrent = 0;
+
+    const allSrcs = Array.from(items).map(el => ({
+      src: el.querySelector('img').src,
+      alt: el.querySelector('img').alt
+    }));
+
+    function openLb(idx) {
+      lbCurrent = idx;
+      lbImg.src = allSrcs[idx].src;
+      lbCaption.textContent = allSrcs[idx].alt;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function lbGo(dir) {
+      lbCurrent = (lbCurrent + dir + allSrcs.length) % allSrcs.length;
+      lbImg.src = allSrcs[lbCurrent].src;
+      lbCaption.textContent = allSrcs[lbCurrent].alt;
+    }
+
+    items.forEach((el, i) => el.addEventListener('click', () => openLb(i)));
+    document.getElementById('lbClose').addEventListener('click', closeLb);
+    document.getElementById('lbPrev').addEventListener('click', () => lbGo(-1));
+    document.getElementById('lbNext').addEventListener('click', () => lbGo(1));
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLb(); });
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLb();
+      if (e.key === 'ArrowLeft') lbGo(-1);
+      if (e.key === 'ArrowRight') lbGo(1);
+    });
+  </script>
+</body>
+</html>

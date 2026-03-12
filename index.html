@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nate & Seb</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #FFFFFF;
+      --ink:    #0A0A0A;
+      --muted:  #888888;
+      --accent: #D41F1F;
+      --dark:   #0A0A0A;
+      --border: rgba(10,10,10,0.12);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.delay-1 { transition-delay: 0.1s; }
+    .reveal.delay-2 { transition-delay: 0.2s; }
+    .reveal.delay-3 { transition-delay: 0.3s; }
+    .reveal.delay-4 { transition-delay: 0.4s; }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .nav-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-link {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink);
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--accent); }
+    .nav-cta {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--accent);
+      transition: opacity 0.15s;
+    }
+    .nav-cta:hover { opacity: 0.7; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--dark);
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      min-height: 520px;
+      overflow: hidden;
+    }
+    .hero-content {
+      padding: 72px 40px 80px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 100px;
+      line-height: 0.92;
+      color: #FFFFFF;
+      margin-bottom: 32px;
+      letter-spacing: 0.02em;
+    }
+    .hero-desc {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.7);
+      max-width: 300px;
+    }
+    .hero-image {
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      padding: 72px 28px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .about p {
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.55;
+      color: var(--ink);
+      max-width: 620px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 20px 28px 14px;
+      background: var(--bg);
+    }
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .section-link {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--accent);
+      transition: opacity 0.15s;
+    }
+    .section-link:hover { opacity: 0.7; }
+
+    /* ── EPISODE GRID ── */
+    .episode-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--bg);
+    }
+    .ep-card {
+      border-top: 1px solid var(--border);
+      padding: 20px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s;
+    }
+    .ep-card:nth-child(odd) { border-right: 1px solid var(--border); }
+    .ep-card:hover { background: rgba(212,31,31,0.04); }
+    .ep-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .ep-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+      background: #111;
+    }
+    .ep-title {
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+
+    /* ── ALL VIDEOS LIST ── */
+    .video-list {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+    .video-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 28px;
+      border-bottom: 1px solid rgba(10,10,10,0.07);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s;
+    }
+    .video-row:hover { background: rgba(212,31,31,0.04); }
+    .video-row-thumb {
+      width: 80px;
+      height: 45px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #111;
+      display: block;
+    }
+    .video-row-meta { flex: 1; }
+    .video-row-label {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .video-row-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+    .video-row-arrow {
+      font-size: 13px;
+      color: var(--accent);
+      flex-shrink: 0;
+      font-weight: 700;
+    }
+
+    /* ── DARK STRIP ── */
+    .dark-strip {
+      background: var(--dark);
+      padding: 64px 28px 72px;
+    }
+    .dark-strip-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+    .dark-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      line-height: 1.0;
+      color: #FFFFFF;
+      letter-spacing: 0.03em;
+    }
+    .dark-headline em {
+      font-style: normal;
+      color: var(--accent);
+    }
+    .dark-body {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.75);
+    }
+    .dark-body a {
+      display: inline-block;
+      margin-top: 24px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--accent);
+    }
+    .dark-body a:hover { opacity: 0.7; }
+
+    /* ── PHOTO TEASER ── */
+    .gallery {
+      background: var(--dark);
+      padding: 56px 28px 64px;
+    }
+    .gallery-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 20px;
+    }
+    .gallery-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+    .gallery-link {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--accent);
+      transition: opacity 0.15s;
+    }
+    .gallery-link:hover { opacity: 0.7; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .gallery-grid .g-wide { grid-column: 1 / -1; }
+    .gallery-img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+    .gallery-img:hover { transform: scale(1.02); }
+    .g-tall .gallery-img { aspect-ratio: 3/4; }
+    .g-wide .gallery-img { aspect-ratio: 16/9; object-position: center 30%; }
+    .g-sq .gallery-img { aspect-ratio: 1/1; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 20px 28px 28px;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .footer-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .footer-sub {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+    .footer-links { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+    .footer-links a {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.15s;
+      line-height: 2;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy {
+      margin-top: 28px;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(10,10,10,0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-brand">Nate & Seb</a>
+    <div class="nav-links">
+      <a href="#episodes" class="nav-link">Episodes</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="gallery.html" class="nav-link">Photos</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <a href="https://www.youtube.com/@NateSeb" target="_blank" class="nav-cta">Watch on YouTube ↗</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow reveal">Mahidol University, Thailand — and everywhere since</p>
+      <h1 class="hero-title reveal delay-1">Nate<br />&amp; Seb.</h1>
+      <p class="hero-desc reveal delay-2">
+        2 friends across the globe.<br />
+        Some creations.<br />
+        Some conversations.<br />
+        New episodes every week.
+      </p>
+    </div>
+    <div class="hero-image">
+      <img src="Downloads/Untitled (16 x 9 in).png" alt="Nate and Seb Podcast" />
+    </div>
+  </section>
+
+  <!-- ABOUT TEASER -->
+  <section class="about" id="about">
+    <p class="reveal">
+      We met in Thailand studying at Mahidol University. What started as a friendship became something harder to name — a shared project, a running conversation, a reason to keep making things. This is where it lives.
+    </p>
+    <a href="about.html" style="display:inline-block;margin-top:28px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;color:var(--accent);" class="reveal delay-1">Read More ↗</a>
+  </section>
+
+  <!-- PHOTO TEASER -->
+  <section class="gallery">
+    <div class="gallery-header reveal">
+      <span class="gallery-label">Sep — Dec 2024</span>
+      <a href="gallery.html" class="gallery-link">All Photos (80) ↗</a>
+    </div>
+    <div class="gallery-grid">
+      <div class="g-tall reveal delay-1">
+        <img class="gallery-img" src="Downloads/Nate_and_Sebs_Pics/Nate_Harry_Sebs.jpeg" alt="Nate, Harry, and Seb" />
+      </div>
+      <div class="g-tall reveal delay-2">
+        <img class="gallery-img" src="Downloads/Nate_and_Sebs_Pics/Bundit_Sunset.jpg" alt="Bundit Sunset" />
+      </div>
+      <div class="g-wide reveal delay-1">
+        <img class="gallery-img" src="Downloads/Nate_and_Sebs_Pics/Krabbi_Beach_Birdseye.jpg" alt="Krabi Beach" />
+      </div>
+      <div class="g-sq reveal delay-2">
+        <img class="gallery-img" src="Downloads/Nate_and_Sebs_Pics/Boys_Angkor_Wat.jpg" alt="Boys at Angkor Wat" />
+      </div>
+      <div class="g-sq reveal delay-3">
+        <img class="gallery-img" src="Downloads/Nate_and_Sebs_Pics/Vietnam_Bike_Selfie_in_Traffic.jpg" alt="Vietnam Bike Selfie" />
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENT EPISODES -->
+  <div class="section-header reveal" id="episodes">
+    <span class="section-label">Recent Episodes</span>
+    <a href="https://www.youtube.com/@NateSeb" target="_blank" class="section-link">All Videos ↗</a>
+  </div>
+
+  <div class="episode-grid">
+    <a class="ep-card reveal" href="https://www.youtube.com/watch?v=sVagJANS90c" target="_blank">
+      <span class="ep-label">Ep. 13</span>
+      <img class="ep-thumb" src="https://i.ytimg.com/vi/sVagJANS90c/hqdefault.jpg" alt="Episode 13 - Vulnerability" />
+      <p class="ep-title">Vulnerability</p>
+    </a>
+    <a class="ep-card reveal delay-1" href="https://www.youtube.com/watch?v=sbQKR3zbAFs" target="_blank">
+      <span class="ep-label">Ep. 12</span>
+      <img class="ep-thumb" src="https://i.ytimg.com/vi/sbQKR3zbAFs/hqdefault.jpg" alt="Episode 12 - One Hour Of Screen Time Per Day" />
+      <p class="ep-title">One Hour Of Screen Time Per Day</p>
+    </a>
+    <a class="ep-card reveal" href="https://www.youtube.com/watch?v=bJzCqpL6F9o" target="_blank">
+      <span class="ep-label">Ep. 10</span>
+      <img class="ep-thumb" src="https://i.ytimg.com/vi/bJzCqpL6F9o/hqdefault.jpg" alt="Episode 10 - Study Abroad Recap" />
+      <p class="ep-title">Study Abroad Recap</p>
+    </a>
+    <a class="ep-card reveal delay-1" href="https://www.youtube.com/watch?v=ao5_AOLWJo8" target="_blank">
+      <span class="ep-label">Ep. 9</span>
+      <img class="ep-thumb" src="https://i.ytimg.com/vi/ao5_AOLWJo8/hqdefault.jpg" alt="Episode 9 - New Year Resolutions" />
+      <p class="ep-title">New Year Resolutions</p>
+    </a>
+  </div>
+
+  <!-- ALL EPISODES LIST -->
+  <div class="section-header reveal" style="margin-top: 32px;">
+    <span class="section-label">All Episodes</span>
+  </div>
+
+  <div class="video-list">
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=EmRPN-dod5A" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/EmRPN-dod5A/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-label">Ep. 7</p>
+        <p class="video-row-title">Vibe Coding an App</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=NycOZ-AfkFo" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/NycOZ-AfkFo/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-label">Ep. 6</p>
+        <p class="video-row-title">Displays and Meteors</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=MGw4CrI7qwc" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/MGw4CrI7qwc/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-label">Ep. 5</p>
+        <p class="video-row-title">AI Generated Shorts</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=vzMOsAGzQ9c" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/vzMOsAGzQ9c/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-label">Ep. 4</p>
+        <p class="video-row-title">Cooking Video</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=Om0jwF955x0" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/Om0jwF955x0/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-label">Ep. 3</p>
+        <p class="video-row-title">Dream Journal</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=D1lWP1AEKug" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/D1lWP1AEKug/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-label">Ep. 2</p>
+        <p class="video-row-title">Individuality</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=_JtN2ASN_E8" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/_JtN2ASN_E8/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-label">Ep. 1</p>
+        <p class="video-row-title">A Week in the Life</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+  </div>
+
+  <!-- OTHER VIDEOS -->
+  <div class="section-header reveal" style="margin-top: 32px;">
+    <span class="section-label">Other Videos</span>
+  </div>
+
+  <div class="video-list">
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=ze8P9GsxpW4" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/ze8P9GsxpW4/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-title">How an Asteroid Would End (or Not End) the World</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=qPpXzmPMgqo" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/qPpXzmPMgqo/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-title">LCD vs LED Screens and the Future of Screen Technology</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=Az4Jy11cNFc" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/Az4Jy11cNFc/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-label">Nate</p>
+        <p class="video-row-title">Cooking Video</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=QWAiGhoEF2I" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/QWAiGhoEF2I/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-title">Week in the Life — Seb</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=PK03YLISM8U" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/PK03YLISM8U/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-title">Week in the Life — Nate</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+    <a class="video-row reveal" href="https://www.youtube.com/watch?v=G9BW8VVoZYQ" target="_blank">
+      <img class="video-row-thumb" src="https://i.ytimg.com/vi/G9BW8VVoZYQ/hqdefault.jpg" alt="" />
+      <div class="video-row-meta">
+        <p class="video-row-title">Week 2 — Glasses</p>
+      </div>
+      <span class="video-row-arrow">↗</span>
+    </a>
+  </div>
+
+  <!-- DARK STRIP -->
+  <section class="dark-strip" style="margin-top: 40px;">
+    <div class="dark-strip-inner">
+      <div class="dark-headline reveal">
+        Started in<br />
+        <em>Thailand.</em><br />
+        Still going.
+      </div>
+      <div class="dark-body reveal delay-2">
+        We met while studying abroad and never really stopped talking. The podcast is just the conversation made public. New episodes every week on YouTube.
+        <a href="https://www.youtube.com/@NateSeb" target="_blank">Subscribe on YouTube ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <span class="footer-brand">Nate & Seb</span>
+        <p class="footer-sub">Nate & Sebastian<br />Est. Mahidol University, Thailand</p>
+      </div>
+      <div class="footer-links">
+        <a href="gallery.html">Photos ↗</a>
+        <a href="https://www.youtube.com/@NateSeb" target="_blank">YouTube ↗</a>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 Nate & Seb</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

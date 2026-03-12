@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Nate & Seb</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #FFFFFF;
+      --ink:    #0A0A0A;
+      --muted:  #888888;
+      --accent: #D41F1F;
+      --dark:   #0A0A0A;
+      --border: rgba(10,10,10,0.12);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.delay-1 { transition-delay: 0.1s; }
+    .reveal.delay-2 { transition-delay: 0.2s; }
+    .reveal.delay-3 { transition-delay: 0.3s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .nav-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-link {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink);
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--accent); }
+    .nav-link.active { color: var(--accent); }
+    .nav-cta {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--accent);
+      transition: opacity 0.15s;
+    }
+    .nav-cta:hover { opacity: 0.7; }
+
+    /* ── HERO ── */
+    .contact-hero {
+      background: var(--dark);
+      padding: 80px 28px 88px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .hero-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 96px;
+      line-height: 0.9;
+      color: #FFFFFF;
+      letter-spacing: 0.02em;
+      margin-bottom: 32px;
+    }
+    .hero-body {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.65);
+      max-width: 400px;
+    }
+    .hero-email-block {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .hero-email-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 10px;
+    }
+    .hero-email-address {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.04em;
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: color 0.15s;
+      display: block;
+    }
+    .hero-email-address:hover { color: var(--accent); }
+
+    /* ── CONTACT FORM PANEL ── */
+    .form-panel {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 48px 40px;
+    }
+    .form-panel-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.04em;
+      color: #FFFFFF;
+      margin-bottom: 32px;
+    }
+
+    /* ── FORM ── */
+    .form-group { margin-bottom: 24px; }
+    .form-label {
+      display: block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 8px;
+    }
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #FFFFFF;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.15s, background 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-input::placeholder,
+    .form-textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.07);
+    }
+    .form-textarea { resize: vertical; min-height: 140px; }
+    .form-select { cursor: pointer; }
+    .form-select option { background: #1a1a1a; color: #fff; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #FFFFFF;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      border: none;
+      padding: 18px 28px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      margin-top: 8px;
+    }
+    .submit-btn:hover { opacity: 0.85; }
+    .submit-btn:active { opacity: 0.7; }
+
+    /* ── SUCCESS STATE ── */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .form-success.show { display: block; }
+    .success-icon {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .success-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      color: #FFFFFF;
+      letter-spacing: 0.03em;
+      margin-bottom: 12px;
+    }
+    .success-body {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+    }
+
+    /* ── INFO STRIP ── */
+    .info-strip {
+      background: var(--bg);
+      padding: 64px 28px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .info-card {
+      background: #F5F5F5;
+      padding: 32px 28px 36px;
+      border-left: 3px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .info-card:hover { border-left-color: var(--accent); }
+    .info-card-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .info-card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .info-card-body {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+    .info-card-body a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .info-card-body a:hover { opacity: 0.7; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 20px 28px 28px;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .footer-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .footer-sub {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+    .footer-links { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+    .footer-links a {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.15s;
+      line-height: 2;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy {
+      margin-top: 28px;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(10,10,10,0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-brand">Nate & Seb</a>
+    <div class="nav-links">
+      <a href="index.html#episodes" class="nav-link">Episodes</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="gallery.html" class="nav-link">Photos</a>
+      <a href="contact.html" class="nav-link active">Contact</a>
+    </div>
+    <a href="https://www.youtube.com/@NateSeb" target="_blank" class="nav-cta">Watch on YouTube ↗</a>
+  </nav>
+
+  <!-- HERO + FORM -->
+  <section class="contact-hero">
+
+    <!-- Left: text -->
+    <div>
+      <p class="hero-eyebrow reveal">Get in Touch</p>
+      <h1 class="hero-title reveal delay-1">Say<br />Hello.</h1>
+      <p class="hero-body reveal delay-2">
+        Have a question, a topic you want us to cover, or just want to reach out? We read everything. No promises on response time, but we do actually read it.
+      </p>
+      <div class="hero-email-block reveal delay-3">
+        <p class="hero-email-label">Email us directly</p>
+        <a class="hero-email-address" href="mailto:sebandnate2025@gmail.com">sebandnate2025@gmail.com</a>
+      </div>
+    </div>
+
+    <!-- Right: form -->
+    <div class="form-panel reveal delay-2">
+      <p class="form-panel-title">Send a Message</p>
+
+      <form id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fname">First Name</label>
+            <input class="form-input" id="fname" type="text" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lname">Last Name</label>
+            <input class="form-input" id="lname" type="text" placeholder="Your last name" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input class="form-input" id="email" type="email" placeholder="your@email.com" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="subject">Subject</label>
+          <select class="form-select" id="subject">
+            <option value="">Select a topic...</option>
+            <option value="episode">Episode topic suggestion</option>
+            <option value="collab">Collaboration</option>
+            <option value="thailand">Thailand / study abroad questions</option>
+            <option value="general">General question</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="message">Message</label>
+          <textarea class="form-textarea" id="message" placeholder="What's on your mind?" required></textarea>
+        </div>
+
+        <button class="submit-btn" type="submit">Send Message ↗</button>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <div class="success-icon">✓</div>
+        <div class="success-title">Message Sent.</div>
+        <p class="success-body">Thanks for reaching out. We'll get back to you at the email you provided.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- INFO CARDS -->
+  <div class="info-strip">
+    <div class="info-card reveal">
+      <p class="info-card-label">Email</p>
+      <p class="info-card-title">Direct Line</p>
+      <p class="info-card-body">For anything — questions, ideas, feedback, or just to say you watched the podcast at 2am in a 7-Eleven.<br /><br /><a href="mailto:sebandnate2025@gmail.com">sebandnate2025@gmail.com</a></p>
+    </div>
+    <div class="info-card reveal delay-1">
+      <p class="info-card-label">YouTube</p>
+      <p class="info-card-title">Watch the Show</p>
+      <p class="info-card-body">New episodes weekly. Subscribe so you don't miss one. Comments are open and we do read them.<br /><br /><a href="https://www.youtube.com/@NateSeb" target="_blank">youtube.com/@NateSeb ↗</a></p>
+    </div>
+    <div class="info-card reveal delay-2">
+      <p class="info-card-label">Response Time</p>
+      <p class="info-card-title">We're Two People.</p>
+      <p class="info-card-body">Nate's in the US. Seb's in Warsaw. We read everything, but we're not a media company. If it's important, say so in the subject line.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <span class="footer-brand">Nate & Seb</span>
+        <p class="footer-sub">Nate & Sebastian<br />Est. Mahidol University, Thailand · Sep 2024</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home ↗</a>
+        <a href="about.html">About ↗</a>
+        <a href="gallery.html">Photos ↗</a>
+        <a href="https://www.youtube.com/@NateSeb" target="_blank">YouTube ↗</a>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 Nate & Seb</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Form submit — opens mailto and shows success state
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name    = document.getElementById('fname').value;
+      const email   = document.getElementById('email').value;
+      const subject = document.getElementById('subject').value || 'Message from website';
+      const message = document.getElementById('message').value;
+
+      const mailto = `mailto:sebandnate2025@gmail.com`
+        + `?subject=${encodeURIComponent(subject + ' — from ' + name)}`
+        + `&body=${encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + message)}`;
+
+      window.location.href = mailto;
+
+      // Show success state after short delay
+      setTimeout(() => {
+        document.getElementById('contactForm').style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+      }, 400);
+    });
+  </script>
+</body>
+</html>
