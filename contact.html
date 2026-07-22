@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact — Nate & Seb</title>
+  <title>Contact - Nate & Seb</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -416,7 +416,7 @@
     <div class="info-card reveal">
       <p class="info-card-label">Email</p>
       <p class="info-card-title">Direct Line</p>
-      <p class="info-card-body">For anything — questions, ideas, feedback, or just to say you watched the podcast at 2am in a 7-Eleven.<br /><br /><a href="mailto:sebandnate2025@gmail.com">sebandnate2025@gmail.com</a></p>
+      <p class="info-card-body">For anything - questions, ideas, feedback, or just to say you watched the podcast at 2am in a 7-Eleven.<br /><br /><a href="mailto:sebandnate2025@gmail.com">sebandnate2025@gmail.com</a></p>
     </div>
     <div class="info-card reveal delay-1">
       <p class="info-card-label">YouTube</p>
@@ -459,7 +459,7 @@
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Form submit — opens mailto and shows success state
+    // Form submit - opens mailto and shows success state
     document.getElementById('contactForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const name    = document.getElementById('fname').value;
@@ -468,7 +468,7 @@
       const message = document.getElementById('message').value;
 
       const mailto = `mailto:sebandnate2025@gmail.com`
-        + `?subject=${encodeURIComponent(subject + ' — from ' + name)}`
+        + `?subject=${encodeURIComponent(subject + ' - from ' + name)}`
         + `&body=${encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + message)}`;
 
       window.location.href = mailto;
